@@ -1,8 +1,5 @@
-class MSstock
+class MSstock extends Stock
 {
-  String date; 
-  Float price;
-  
   MSstock(String line)
   {
     String[] parts = line.split(",");

@@ -1,8 +1,5 @@
-class APLstock
+class APLstock extends Stock
 {  
-  String date; 
-  Float price;
-
   APLstock(String line)
   {
     String[] parts = line.split(",");

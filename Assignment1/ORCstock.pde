@@ -1,8 +1,5 @@
-class ORCstock 
+class ORCstock extends Stock
 {
-  String date; 
-  Float price;
-
   ORCstock(String line)
   {
     String[] parts = line.split(",");
