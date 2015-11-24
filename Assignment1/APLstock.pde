@@ -1,9 +1,9 @@
-class MSstock
-{
+class APLstock
+{  
   String date; 
   Float price;
-  
-  MSstock(String line)
+
+  APLstock(String line)
   {
     String[] parts = line.split(",");
 

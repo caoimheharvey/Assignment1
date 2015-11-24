@@ -1,9 +1,9 @@
-class MSstock
+class ORCstock 
 {
   String date; 
   Float price;
-  
-  MSstock(String line)
+
+  ORCstock(String line)
   {
     String[] parts = line.split(",");
 
