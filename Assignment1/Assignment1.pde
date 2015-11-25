@@ -16,11 +16,14 @@ void setup()
   loadData();
 
   border = width * 0.1f;
-  
+
   minVals[0] = findMin(msft);
   minVals[1] = findMin(aapl);
   minVals[2] = findMin(orcl);
-  println(minVals[0]);
+
+  maxVals[0] = findMax(msft);
+  maxVals[1] = findMax(aapl);
+  maxVals[2] = findMax(orcl);
 }
 
 void loadData()
@@ -33,10 +36,10 @@ void loadData()
   {
     MSstock msstock = new MSstock(lines[i]);
     msft.add(msstock);
-    
+
     APLstock aplstock = new APLstock(lines1[i]);
     aapl.add(aplstock);
-    
+
     ORCstock orcstock = new ORCstock(lines2[i]);
     orcl.add(orcstock);
   }
@@ -45,28 +48,43 @@ void loadData()
 float findMin(ArrayList data)
 {
   float min = ((Stock) data.get(0)).price;
-  int minIndex = 0;
-  for(int i = 1; i < data.size(); i++)
+  for (int i = 1; i < data.size (); i++)
   {
-    if(((Stock) data.get(i)).price < min)
+    if (((Stock) data.get(i)).price < min)
     {
       min = ((Stock) data.get(i)).price;
-      minIndex = i;
     }
   }
   println("minimum is: " + min);
   return min;
 }
 
+float findMax(ArrayList data)
+{
+  float max = ((Stock) data.get(0)).price;
+  for (int i = 1; i < data.size (); i++)
+  {
+    if (((Stock) data.get(i)).price > max)
+    {
+      max = ((Stock) data.get(i)).price;
+    }
+  }
+  println("maximum is: " + max);
+  return max;
+}
+
 float[] minVals = new float[3];
-float[] maxVals;
+float[] maxVals = new float[3];
 float border;
 
 void draw()
 {
   background(0);
   drawAxis();
-  //showGraphs();
+  // showGraphs();
+  drawGraph(aapl, minVals[1], maxVals[1]);
+  drawGraph(aapl, min(minVals), max(maxVals));
+  drawGraph(orcl, min(minVals), max(maxVals));
 }
 
 void drawAxis()
@@ -75,27 +93,43 @@ void drawAxis()
   line(border - 5, height - border, width - border, height - border);
   line(border, border, border, height - border + 5);
 }
-
 /*
 void showGraphs()
 {
-  switch(keyPressed)
+  switch(k)
   {
   case 0:
-    msftGraph(msft, min(minVals), max(maxVals));
-    aaplGraph(aapl, min(minVals), max(maxVals));
-    orclGraph(orcl, min(minVals), max(maxVals));
+    drawGraph(msft, min(minVals), max(maxVals));
+    drawGraph(aapl, min(minVals), max(maxVals));
+    drawGraph(orcl, min(minVals), max(maxVals));
     break;
   case 1:
-    msftGraph(msft, min(msft), max(msft));
+    drawGraph(msft, minVals[0], maxVals[0]);
     break;
   case 2:
-    aaplGraph(aapl, min(aapl), max(aapl));
+    drawGraph(aapl, minVals[1], maxVals[1]);
     break;
   case 3:
-    orclGraph(orcl, min(orcl), max(orcl));
+    drawGraph(orcl, minVals[2], maxVals[2]);
     break;
   }
 }
 */
+
+void drawGraph(ArrayList data, float min, float max)
+{
+  for (int i = 1; i < data.size (); i ++)
+  {
+    stroke(0, 255, 255);
+    float x1 = map(i - 1, 0, data.size() - 1, border, width - border);
+    float y1 = map(((Stock) data.get(i - 1)).price, min, max, height - border, border);
+    float x2 = map(i, 0, data.size() - 1, border, width - border);
+    float y2 = map(((Stock) data.get(i)).price, min, max, height - border, border);
+    line(x1, y1, x2, y2);
+  }
+}
+
+void keyPressed()
+{
+}
 
