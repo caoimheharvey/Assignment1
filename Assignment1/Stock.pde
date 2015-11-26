@@ -4,5 +4,7 @@ class Stock
   Float price;
   Stock()
   {
+
   }
 }
+
