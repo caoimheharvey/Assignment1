@@ -7,5 +7,12 @@ class MSstock extends Stock
     date = parts[0];
     price = Float.parseFloat(parts[4]);
   }
+  void renderGraph()
+  {
+  }
+
+  void renderLines()
+  {
+  }
 }
 

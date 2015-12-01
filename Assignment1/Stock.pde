@@ -5,5 +5,13 @@ class Stock
   Stock()
   {
   }
+
+  void renderGraph()
+  {
+  }
+
+  void renderLines()
+  {
+  }
 }
 

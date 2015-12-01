@@ -106,15 +106,16 @@ void drawGraph(ArrayList data, float min, float max)
   float x1, y1, x2, y2;
   for (int i = 1; i < data.size (); i ++)
   { 
-    x1 = map(i - 1, 0, data.size() - 1, border, width - border);
+     x1 = map(i - 1, 0, data.size() - 1, width - border, border);
     y1 = map(((Stock) data.get(i - 1)).price, min, max, height - border, border);
-    x2 = map(i, 0, data.size() - 1, border, width - border);
+    x2 = map(i, 0, data.size() - 1, width - border, border);
     y2 = map(((Stock) data.get(i)).price, min, max, height - border, border);
     fill(255, 0, 0);
     line(x1, y1, x2, y2);
 
 
-    if (mouseX >= x1 && mouseX <= x2)
+
+    if (mouseX >= x2 && mouseX <= x1)
     {      
       stroke(0); 
       fill(0);
@@ -237,4 +238,3 @@ void moreInfo()
   text("The data is represented in a line graph comparing the 3 graphs,\nthen with user selection the user can view each graph individually.", border, cy );
   text("When the user is in an individual graph and presses and holds the\nmouse, an additional rotating bar graph is displayed along with the each bar's value.", border, cy + 100);
 }
-
