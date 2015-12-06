@@ -16,6 +16,7 @@ void setup()
   loadData();
 
   border = width * 0.1f;
+  toggled = false;
 
   minVals[0] = findMin(msft);
   minVals[1] = findMin(aapl);
@@ -29,14 +30,14 @@ void setup()
 void draw()
 {
   background(100);
-  fill(230);
+  fill(255);
   textSize(12);
   text("0: All graphs", 30, height - (border * 0.5f));
   text("1: Microsoft", 110, height - (border * 0.5f));
   text("2: Apple", 200, height - (border * 0.5f));
   text("3: Oracle", 280, height - (border * 0.5f));
-  text("To change format of graphs 1-3 \n press and hold your mouse", 370, height - (border * 0.5f));
-  text("5: Credits", 600, height - (border * 0.5f));
+  text("To change format of graphs 1-3 \n click your mouse", 370, height - (border * 0.5f));
+  text("5: Read Me", 600, height - (border * 0.5f));
 
   showGraphs();
 }
@@ -91,7 +92,7 @@ float[] maxVals = new float[3];
 float[] averages = new float[3];
 float border;
 boolean[] keys = new boolean[512];
-
+boolean toggled; 
 
 void drawAxis()
 {
@@ -106,7 +107,7 @@ void drawGraph(ArrayList data, float min, float max)
   float x1, y1, x2, y2;
   for (int i = 1; i < data.size (); i ++)
   { 
-     x1 = map(i - 1, 0, data.size() - 1, width - border, border);
+    x1 = map(i - 1, 0, data.size() - 1, width - border, border);
     y1 = map(((Stock) data.get(i - 1)).price, min, max, height - border, border);
     x2 = map(i, 0, data.size() - 1, width - border, border);
     y2 = map(((Stock) data.get(i)).price, min, max, height - border, border);
@@ -151,14 +152,18 @@ void showGraphs()
   }
   if (keys['1'])
   {
-    fill(255);
-    textSize(14);
-    text("Microsoft", width * 0.5f - 20, border * 0.5f);
-    if (mousePressed == true)
+    if (toggled)
     {
+      background(100);
+      fill(255);
+      textSize(14);
+      text("Microsoft", width * 0.5f - 20, border * 0.5f);
       drawLines(msft, minVals[0], maxVals[0]);
     } else
     {
+      fill(255);
+      textSize(14);
+      text("Microsoft", width * 0.5f - 20, border * 0.5f);
       drawAxis();
       stroke(255, 255, 0);
       drawGraph(msft, minVals[0], maxVals[0]);
@@ -166,14 +171,18 @@ void showGraphs()
   }
   if (keys['2'])
   {    
-    fill(255);
-    textSize(14);
-    text("Apple", width * 0.5f - 20, border * 0.5f);
-    if (mousePressed)
+    if (toggled)
     {
+      background(100);
+      fill(255);
+      textSize(14);
+      text("Apple", width * 0.5f - 20, border * 0.5f);
       drawLines(aapl, minVals[1], maxVals[1]);
     } else
     {
+      fill(255);
+      textSize(14);
+      text("Apple", width * 0.5f - 20, border * 0.5f);
       drawAxis();
       stroke(255, 142, 101);
       drawGraph(aapl, minVals[1], maxVals[1]);
@@ -181,14 +190,18 @@ void showGraphs()
   }
   if (keys['3'])
   {
-    fill(255);
-    textSize(14);
-    text("Oracle", width * 0.5f - 20, border * 0.5f);
-    if (mousePressed)
+    if (toggled)
     {
+      background(100);
+      fill(255);
+      textSize(14);
+      text("Oracle", width * 0.5f - 20, border * 0.5f);
       drawLines(orcl, minVals[2], maxVals[2]);
     } else
     {
+      fill(255);
+      textSize(14);
+      text("Oracle", width * 0.5f - 20, border * 0.5f);
       drawAxis();
       stroke(0, 225, 230);
       drawGraph(orcl, minVals[2], maxVals[2]);
@@ -202,25 +215,22 @@ void showGraphs()
 }
 
 
-void drawLines(ArrayList numbers, float min, float max)
+void drawLines(ArrayList data, float min, float max)
 {
   lights();
   translate(width * 0.5f, height * 0.5f);
   rotateX(1.2);
   rotateZ(map(mouseX, 0, width, 0, TWO_PI));
-  for (int i = 0; i < numbers.size (); i++) 
+  for (int i = 0; i < data.size (); i++) 
   {
-    float colour = map(((Stock) numbers.get(i)).price, min, max, 0, 255);
+    float colour = map(((Stock) data.get(i)).price, min, max, 0, 255);
     fill(255, colour, 0);
-    float wid = map(((Stock) numbers.get(i)).price, 0, max, 0, width/2 - 50);
+    float wid = map(((Stock) data.get(i)).price, 0, max, 0, width/2 - 50);
     pushMatrix();
     translate(300, 0);
     box(20, 20, wid);
-    stroke(255); 
-    fill(255);
-    text(((Stock) numbers.get(i)).price, 10, 10);
     popMatrix();
-    rotate(TWO_PI/numbers.size());
+    rotate(TWO_PI/data.size());
   }
 }
 
@@ -232,9 +242,15 @@ void moreInfo()
   text("Caoimhe Harvey", cx, border);
   text("C14724965", cx, border + 50);
   text("Computer Science International \n DT282 Year 2", cx, border + 100);
-  
+
   textSize(14);
   text("This program is designed to show different closing stock prices\nfor Oracle, Apple, and Microsoft over a period of 3 months (Aug 21, 2015 - Nov 21, 2015).", border, cy - 100); 
   text("The data is represented in a line graph comparing the 3 graphs,\nthen with user selection the user can view each graph individually.", border, cy );
   text("When the user is in an individual graph and presses and holds the\nmouse, an additional rotating bar graph is displayed along with the each bar's value.", border, cy + 100);
 }
+
+void mousePressed()
+{
+  toggled = !toggled;
+}
+
